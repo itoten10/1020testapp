@@ -1,0 +1,42 @@
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Streamlit
+.streamlit/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Flutter (legacy - not used)
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+android/
+ios/
+linux/
+macos/
+web/
+windows/
+test/
