@@ -437,6 +437,11 @@ elif st.session_state.page == 'コレクション':
                         st.caption(f"種族: {item['egg_type']}")
                         st.caption(f"❤️{item['hp']} ⚔️{item['attack']} 🛡️{item['defense']}")
                         st.caption(f"タップ数: {item['tap_count']}")
+
+                        # 登録日時を表示
+                        from datetime import datetime
+                        created_at = datetime.fromisoformat(item['created_at'].replace('Z', '+00:00'))
+                        st.caption(f"📅 {created_at.strftime('%Y/%m/%d %H:%M')}")
                         st.divider()
         else:
             st.info('まだコレクションがありません。最初のキャラクターを育ててコレクションに追加しましょう！')
