@@ -1,7 +1,7 @@
 import streamlit as st
 from supabase import create_client, Client
 import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 # Supabase設定（環境変数から取得）
 SUPABASE_URL = st.secrets.get("SUPABASE_URL") or os.getenv("SUPABASE_URL")
@@ -438,10 +438,21 @@ elif st.session_state.page == 'コレクション':
                         st.caption(f"❤️{item['hp']} ⚔️{item['attack']} 🛡️{item['defense']}")
                         st.caption(f"タップ数: {item['tap_count']}")
 
-                        # 登録日時を表示
-                        from datetime import datetime
-                        created_at = datetime.fromisoformat(item['created_at'].replace('Z', '+00:00'))
-                        st.caption(f"📅 {created_at.strftime('%Y/%m/%d %H:%M')}")
+                        # 登録日時を日本時間で表示
+                        JST = timezone(timedelta(hours=9))
+                        created_at_utc = datetime.fromisoformat(item['created_at'].replace('Z', '+00:00'))
+                        created_at_jst = created_at_utc.astimezone(JST)
+                        st.caption(f"📅 {created_at_jst.strftime('%Y/%m/%d %H:%M')}")
+
+                        # 削除ボタン
+                        if st.button('🗑️ 削除', key=f"delete_{item['id']}", use_container_width=True, type='secondary'):
+                            try:
+                                supabase.table('character_collection').delete().eq('id', item['id']).execute()
+                                st.success(f'「{item["character_name"]}」を削除しました')
+                                st.rerun()
+                            except Exception as delete_error:
+                                st.error(f'削除エラー: {delete_error}')
+
                         st.divider()
         else:
             st.info('まだコレクションがありません。最初のキャラクターを育ててコレクションに追加しましょう！')
